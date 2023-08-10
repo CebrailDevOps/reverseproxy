@@ -1,0 +1,71 @@
+version: '3.1'
+
+services:
+  reverseproxy:
+    image: nginx:latest
+    container_name: nginxrp
+    volumes:
+      - ./nginx/core.conf:/etc/nginx/conf.d/core.conf
+      - ./nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf
+      - ./nginx/wordpress1.conf:/etc/nginx/conf.d/wordpress1.conf
+      - ./nginx/wordpress2.conf:/etc/nginx/conf.d/wordpress2.conf
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - web1
+      - web2
+      - db1
+      - db2
+
+  web1:
+    image: wordpress:latest
+    container_name: wordpress1
+    volumes:
+      - ./wordpress/wp1:/var/www/html
+    links:
+      - db1
+    environment:
+      - WORDPRESS_DB_HOST=db1
+      - WORDPRESS_DB_USER=wordpress1
+      - WORDPRESS_DB_PASSWORD=root1234
+      - WORDPRESS_DB_NAME=wordpress1
+
+  web2:
+      image: wordpress:latest
+    container_name: wordpress2
+    volumes:
+      - ./wordpress/wp2:/var/www/html
+    links:
+      - db2
+    environment:
+      - WORDPRESS_DB_HOST=db2
+      - WORDPRESS_DB_USER=wordpress2
+      - WORDPRESS_DB_PASSWORD=root1234
+      - WORDPRESS_DB_NAME=wordpress2
+
+  db1:
+    image: mariadb:latest
+    restart: always
+    container_name: db1
+    volumes:
+      - ./mariadb/db1:/var/lib/mysql
+      - ./mariadb/conf1.d:/etc/mysql/conf.d
+    environment:
+      - MARIADB_ROOT_PASSWORD=root1234
+      - MARIADB_DATABASE=wordpress1
+      - MARIADB_USER=wordpress1
+      - MARIADB_PASSWORD=root1234
+
+  db2:
+    image: mariadb:latest
+    restart: always
+    container_name: db2
+    volumes:
+      - ./mariadb/db2:/var/lib/mysql
+      - ./mariadb/conf2.d:/etc/mysql/conf.d
+    environment:
+      - MARIADB_ROOT_PASSWORD=root1234
+      - MARIADB_DATABASE=wordpress2
+      - MARIADB_USER=wordpress2
+      - MARIADB_PASSWORD=root1234
