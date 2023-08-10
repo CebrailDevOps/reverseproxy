@@ -10,6 +10,7 @@ services:
       - ./nginx/wordpress1.conf:/etc/nginx/conf.d/wordpress1.conf
       - ./nginx/wordpress2.conf:/etc/nginx/conf.d/wordpress2.conf
       - ./nginx/sprin.conf:/etc/nginx/conf.d/sprin.conf
+      - ./nginx/ismail.conf:/etc/nginx/conf.d/ismail.conf
       - ./nginx/html:/var/www/html
     ports:
       - "80:80"
