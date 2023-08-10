@@ -10,4 +10,4 @@ git clone https://github.com/CebrailDevOps/reverseproxy.git
 cd reverseproxy
 
 ### docker compose
-docker-compose up
+docker-compose up -d
