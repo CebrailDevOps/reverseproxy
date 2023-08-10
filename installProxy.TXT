@@ -5,3 +5,6 @@ sudo usermod -aG docker $USER
 sudo apt -y install docker-compose
 sudo reboot
 
+### cloner repo git
+git clone https://github.com/CebrailDevOps/reverseproxy.git
+cd reverseproxy
