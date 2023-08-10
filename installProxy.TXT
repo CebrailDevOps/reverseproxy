@@ -7,7 +7,34 @@ sudo reboot
 
 ### cloner repo git
 git clone https://github.com/CebrailDevOps/reverseproxy.git
-cd reverseproxy
 
 ### docker compose
+cd reverseproxy
 docker-compose up -d
+# pour arrêter
+# docker compose down
+
+#### INFO ####
+Il y a 5 conteneurs Docker:
+ 1x Nginx pour le reverse proxy
+ 2x Wordpress pour l'exemple
+ 2x DB pour Wordpress pour l'exemple
+
+Pour supprimer les Wordpress:
+ supprimer les dossiers mariadb et wordpress
+ dans le dossier nginx supprimer wordpress1.conf et wordpress2.conf
+ dans le fichier docker-compose.yml supprimer les lignes:
+  des services web1, web2, db1 et db2
+  - ./nginx/wordpress1.conf:/etc/nginx/conf.d/wordpress1.conf
+  - ./nginx/wordpress2.conf:/etc/nginx/conf.d/wordpress2.conf
+
+Le fichier nginx/ismail.conf est un exemple pour du reverse proxy.
+Copier/coller, renomer pour faire d'autres redirections.
+
+server {
+    listen 80; # il est possible de faire écouter sur le port 443 ou autres
+    server_name ismail.xenobi.be; # le nom de (sous)domaine que l'utilisateur entre sur son navigateur
+    location / {
+        proxy_pass http://10.0.10.239; # redirection vers votre serveur local
+    }
+}
